@@ -15,3 +15,22 @@ model Project {
   demoUrl     String?
   createdAt   DateTime @default(now())
 }
+
+// Model untuk menyimpan data Admin yang bisa login
+model Admin {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique // Email admin untuk login
+  password  String   // Password yang akan di hash menggunakan bcrypt
+  createdAt DateTime @default(now())
+}
+
+// Model untuk menyimpan data Sertifikat portofolio
+model Certificate {
+  id            Int      @id @default(autoincrement())
+  title         String   // Judul sertifikat
+  description   String?  // Deskripsi opsional
+  credentialUrl String?  // Link URL ke sertifikat asli (opsional)
+  fileUrl       String?  // Path/URL ke file gambar atau PDF yang diupload
+  isPdf         Boolean  @default(false) // Menandakan apakah file berupa PDF atau bukan
+  createdAt     DateTime @default(now())
+}

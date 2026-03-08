@@ -11,26 +11,46 @@ model Project {
   title       String
   description String
   techStack   String
+  icon        String?
   githubUrl   String?
   demoUrl     String?
   createdAt   DateTime @default(now())
 }
 
+model Experience {
+  id        Int      @id @default(autoincrement())
+  role      String
+  company   String
+  period    String
+  location  String?
+  logo      String?
+  tech      String   @default("")
+  createdAt DateTime @default(now())
+}
+
+model Skill {
+  id        Int      @id @default(autoincrement())
+  category  String
+  icon      String?
+  items     String   @default("")
+  createdAt DateTime @default(now())
+}
+
 // Model untuk menyimpan data Admin yang bisa login
 model Admin {
   id        Int      @id @default(autoincrement())
-  email     String   @unique // Email admin untuk login
-  password  String   // Password yang akan di hash menggunakan bcrypt
+  email     String   @unique
+  password  String
   createdAt DateTime @default(now())
 }
 
 // Model untuk menyimpan data Sertifikat portofolio
 model Certificate {
   id            Int      @id @default(autoincrement())
-  title         String   // Judul sertifikat
-  description   String?  // Deskripsi opsional
-  credentialUrl String?  // Link URL ke sertifikat asli (opsional)
-  fileUrl       String?  // Path/URL ke file gambar atau PDF yang diupload
-  isPdf         Boolean  @default(false) // Menandakan apakah file berupa PDF atau bukan
+  title         String
+  description   String?
+  credentialUrl String?
+  fileUrl       String?
+  isPdf         Boolean  @default(false)
   createdAt     DateTime @default(now())
 }

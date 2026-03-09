@@ -25,7 +25,7 @@ export class CertificateService {
   // Mengambil semua sertifikat diurutkan berdasarkan terbaru
   async findAll() {
     return this.prisma.certificate.findMany({
-      orderBy: { createdAt: 'desc' },
+      orderBy: { order: 'asc' },
     });
   }
 
@@ -33,6 +33,17 @@ export class CertificateService {
     const certificate = await this.prisma.certificate.findUnique({ where: { id } });
     if (!certificate) throw new NotFoundException('Certificate not found');
     return certificate;
+  }
+
+  async reorder(items: { id: number; order: number }[]) {
+    const updates = items.map((item) =>
+      this.prisma.certificate.update({
+        where: { id: item.id },
+        data: { order: item.order },
+      })
+    );
+    await this.prisma.$transaction(updates);
+    return { success: true };
   }
 
   // Memperbarui sebagian field tanpa mengubah file. 

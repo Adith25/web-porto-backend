@@ -13,8 +13,10 @@ export class AuthService {
 
   async login(loginDto: LoginDto) {
     const { email, password } = loginDto;
+    console.log(`[LOGIN ATTEMPT] Email: '${email}', Password: '${password}'`);
     // Cari admin berdasarkan email
     const admin = await this.prisma.admin.findUnique({ where: { email } });
+    console.log(`[LOGIN ATTEMPT] Admin found:`, admin ? `Yes (ID: ${admin.id})` : 'No');
     
     if (!admin) {
       throw new UnauthorizedException('Invalid credentials');
@@ -22,6 +24,7 @@ export class AuthService {
 
     // Verifikasi password
     const isPasswordValid = await bcrypt.compare(password, admin.password);
+    console.log(`[LOGIN ATTEMPT] Bcrypt compare result: ${isPasswordValid}`);
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid credentials');
     }

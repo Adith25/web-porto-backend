@@ -8,7 +8,7 @@ export class SkillService {
   constructor(private prisma: PrismaService) {}
 
   findAll() {
-    return this.prisma.skill.findMany({ orderBy: { createdAt: 'asc' } });
+    return this.prisma.skill.findMany({ orderBy: { order: 'asc' } });
   }
 
   create(dto: CreateSkillDto) {
@@ -25,5 +25,16 @@ export class SkillService {
 
   count() {
     return this.prisma.skill.count();
+  }
+
+  async reorder(items: { id: number; order: number }[]) {
+    const updates = items.map((item) =>
+      this.prisma.skill.update({
+        where: { id: item.id },
+        data: { order: item.order },
+      })
+    );
+    await this.prisma.$transaction(updates);
+    return { success: true };
   }
 }

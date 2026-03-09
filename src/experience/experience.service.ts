@@ -8,7 +8,7 @@ export class ExperienceService {
   constructor(private prisma: PrismaService) {}
 
   findAll() {
-    return this.prisma.experience.findMany({ orderBy: { createdAt: 'desc' } });
+    return this.prisma.experience.findMany({ orderBy: { order: 'asc' } });
   }
 
   create(dto: CreateExperienceDto) {
@@ -25,5 +25,16 @@ export class ExperienceService {
 
   count() {
     return this.prisma.experience.count();
+  }
+
+  async reorder(items: { id: number; order: number }[]) {
+    const updates = items.map((item) =>
+      this.prisma.experience.update({
+        where: { id: item.id },
+        data: { order: item.order },
+      })
+    );
+    await this.prisma.$transaction(updates);
+    return { success: true };
   }
 }

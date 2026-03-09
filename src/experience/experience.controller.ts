@@ -34,6 +34,12 @@ export class ExperienceController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Post('reorder')
+  reorder(@Body() items: { id: number; order: number }[]) {
+    return this.experienceService.reorder(items);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.experienceService.remove(id);

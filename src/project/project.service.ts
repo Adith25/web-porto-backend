@@ -8,7 +8,7 @@ export class ProjectService {
   constructor(private prisma: PrismaService) {}
 
   findAll() {
-    return this.prisma.project.findMany({ orderBy: { createdAt: 'desc' } });
+    return this.prisma.project.findMany({ orderBy: { order: 'asc' } });
   }
 
   create(dto: CreateProjectDto) {
@@ -25,5 +25,17 @@ export class ProjectService {
 
   count() {
     return this.prisma.project.count();
+  }
+
+  async reorder(items: { id: number; order: number }[]) {
+    // Start a transaction to update all orders
+    const updates = items.map((item) =>
+      this.prisma.project.update({
+        where: { id: item.id },
+        data: { order: item.order },
+      })
+    );
+    await this.prisma.$transaction(updates);
+    return { success: true };
   }
 }

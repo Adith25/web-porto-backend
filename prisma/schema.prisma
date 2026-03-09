@@ -14,6 +14,7 @@ model Project {
   icon        String?
   githubUrl   String?
   demoUrl     String?
+  order       Int      @default(0)
   createdAt   DateTime @default(now())
 }
 
@@ -25,6 +26,7 @@ model Experience {
   location  String?
   logo      String?
   tech      String   @default("")
+  order     Int      @default(0)
   createdAt DateTime @default(now())
 }
 
@@ -33,6 +35,7 @@ model Skill {
   category  String
   icon      String?
   items     String   @default("")
+  order     Int      @default(0)
   createdAt DateTime @default(now())
 }
 
@@ -52,5 +55,6 @@ model Certificate {
   credentialUrl String?
   fileUrl       String?
   isPdf         Boolean  @default(false)
+  order         Int      @default(0)
   createdAt     DateTime @default(now())
 }

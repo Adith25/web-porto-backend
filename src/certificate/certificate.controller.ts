@@ -63,6 +63,12 @@ export class CertificateController {
     return this.certificateService.update(+id, updateCertificateDto);
   }
 
+  @Post('reorder')
+  @UseGuards(JwtAuthGuard)
+  reorder(@Body() items: { id: number; order: number }[]) {
+    return this.certificateService.reorder(items);
+  }
+
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   remove(@Param('id') id: string) {

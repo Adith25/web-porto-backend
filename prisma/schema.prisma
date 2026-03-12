@@ -59,3 +59,25 @@ model Certificate {
   order         Int      @default(0)
   createdAt     DateTime @default(now())
 }
+
+// Model untuk menyimpan data About Me card
+model AboutCard {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  icon      String?
+  textColor String   @default("text-gray-600 dark:text-gray-400")
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+// Model untuk menyimpan pengaturan umum website seperti Announcement Banner
+model SiteSetting {
+  id                 Int      @id @default(1)
+  announcementText   String   @default("⚠️ This website is still under development ⚠️")
+  announcementActive Boolean  @default(true)
+  bannerColor        String   @default("#4f46e5") // indigo-600
+  textColor          String   @default("#ffffff") // white
+  animationSpeed     Int      @default(25)        // seconds
+  updatedAt          DateTime @updatedAt
+}

@@ -28,13 +28,12 @@ export class SkillService {
   }
 
   async reorder(items: { id: number; order: number }[]) {
-    const updates = items.map((item) =>
-      this.prisma.skill.update({
+    for (const item of items) {
+      await this.prisma.skill.update({
         where: { id: item.id },
         data: { order: item.order },
-      })
-    );
-    await this.prisma.$transaction(updates);
+      });
+    }
     return { success: true };
   }
 }

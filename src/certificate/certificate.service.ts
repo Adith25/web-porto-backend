@@ -36,13 +36,12 @@ export class CertificateService {
   }
 
   async reorder(items: { id: number; order: number }[]) {
-    const updates = items.map((item) =>
-      this.prisma.certificate.update({
+    for (const item of items) {
+      await this.prisma.certificate.update({
         where: { id: item.id },
         data: { order: item.order },
-      })
-    );
-    await this.prisma.$transaction(updates);
+      });
+    }
     return { success: true };
   }
 

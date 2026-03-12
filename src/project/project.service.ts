@@ -28,14 +28,12 @@ export class ProjectService {
   }
 
   async reorder(items: { id: number; order: number }[]) {
-    // Start a transaction to update all orders
-    const updates = items.map((item) =>
-      this.prisma.project.update({
+    for (const item of items) {
+      await this.prisma.project.update({
         where: { id: item.id },
         data: { order: item.order },
-      })
-    );
-    await this.prisma.$transaction(updates);
+      });
+    }
     return { success: true };
   }
 }

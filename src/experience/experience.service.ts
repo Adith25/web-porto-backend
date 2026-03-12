@@ -28,13 +28,12 @@ export class ExperienceService {
   }
 
   async reorder(items: { id: number; order: number }[]) {
-    const updates = items.map((item) =>
-      this.prisma.experience.update({
+    for (const item of items) {
+      await this.prisma.experience.update({
         where: { id: item.id },
         data: { order: item.order },
-      })
-    );
-    await this.prisma.$transaction(updates);
+      });
+    }
     return { success: true };
   }
 }

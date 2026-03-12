@@ -19,15 +19,16 @@ model Project {
 }
 
 model Experience {
-  id        Int      @id @default(autoincrement())
-  role      String
-  company   String
-  period    String
-  location  String?
-  logo      String?
-  tech      String   @default("")
-  order     Int      @default(0)
-  createdAt DateTime @default(now())
+  id          Int      @id @default(autoincrement())
+  role        String
+  company     String
+  position    String?
+  period      String
+  location    String?
+  logo        String?
+  description String   @default("")
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
 }
 
 model Skill {

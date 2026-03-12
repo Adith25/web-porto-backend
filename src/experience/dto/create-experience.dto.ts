@@ -7,6 +7,10 @@ export class CreateExperienceDto {
   @IsString()
   company: string;
 
+  @IsOptional()
+  @IsString()
+  position?: string;
+
   @IsString()
   period: string;
 
@@ -20,5 +24,5 @@ export class CreateExperienceDto {
 
   @IsOptional()
   @IsString()
-  tech?: string;
+  description?: string;
 }

@@ -20,4 +20,8 @@ export class UpdateSettingDto {
   @IsOptional()
   @IsInt()
   animationSpeed?: number;
+
+  @IsOptional()
+  @IsString()
+  cvUrl?: string;
 }

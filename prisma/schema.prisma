@@ -79,5 +79,6 @@ model SiteSetting {
   bannerColor        String   @default("#4f46e5") // indigo-600
   textColor          String   @default("#ffffff") // white
   animationSpeed     Int      @default(25)        // seconds
+  cvUrl              String?
   updatedAt          DateTime @updatedAt
 }

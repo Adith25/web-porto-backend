@@ -4,20 +4,23 @@ import { CreateCertificateDto } from './dto/create-certificate.dto';
 import { UpdateCertificateDto } from './dto/update-certificate.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { diskStorage } from 'multer';
+import { diskStorage, memoryStorage } from 'multer';
 import { extname } from 'path';
 
-// Konfigurasi Multer untuk menyimpan file di folder uploads
+// Konfigurasi Multer: Gunakan memoryStorage di Vercel untuk menghindari error read-only file system
+const storage = process.env.VERCEL
+  ? memoryStorage()
+  : diskStorage({
+      destination: './uploads/certificates',
+      filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        const ext = extname(file.originalname);
+        cb(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
+      },
+    });
+
 const multerOptions = {
-  storage: diskStorage({
-    destination: './uploads/certificates',
-    filename: (req, file, cb) => {
-      // Menghasilkan nama file unik
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-      const ext = extname(file.originalname);
-      cb(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
-    },
-  }),
+  storage,
   fileFilter: (req, file, cb) => {
     // Membatasi tipe file
     if (file.fieldname === 'imageFile') {
@@ -56,10 +59,13 @@ export class CertificateController {
     const imageFile = files.imageFile[0];
     const pdfFile = files.pdfFile?.[0];
     
-    // Path URL untuk image
-    const imageUrl = `/uploads/certificates/${imageFile.filename}`;
+    // Path URL untuk image (Gunakan originalname jika filename tidak ada/memoryStorage)
+    const imageFilename = imageFile.filename || `${Date.now()}-${imageFile.originalname}`;
+    const imageUrl = `/uploads/certificates/${imageFilename}`;
+
     // Path URL untuk PDF (jika ada)
-    const pdfUrl = pdfFile ? `/uploads/certificates/${pdfFile.filename}` : null;
+    const pdfFilename = pdfFile ? (pdfFile.filename || `${Date.now()}-${pdfFile.originalname}`) : null;
+    const pdfUrl = pdfFilename ? `/uploads/certificates/${pdfFilename}` : null;
     
     return this.certificateService.create(createCertificateDto, imageUrl, pdfUrl);
   }
@@ -89,9 +95,12 @@ export class CertificateController {
     const pdfFile = files.pdfFile?.[0];
     
     // Path URL untuk image (jika diupload baru)
-    const imageUrl = imageFile ? `/uploads/certificates/${imageFile.filename}` : undefined;
+    const imageFilename = imageFile ? (imageFile.filename || `${Date.now()}-${imageFile.originalname}`) : undefined;
+    const imageUrl = imageFilename ? `/uploads/certificates/${imageFilename}` : undefined;
+
     // Path URL untuk PDF (jika diupload baru)
-    const pdfUrl = pdfFile ? `/uploads/certificates/${pdfFile.filename}` : undefined;
+    const pdfFilename = pdfFile ? (pdfFile.filename || `${Date.now()}-${pdfFile.originalname}`) : undefined;
+    const pdfUrl = pdfFilename ? `/uploads/certificates/${pdfFilename}` : undefined;
 
     return this.certificateService.update(+id, updateCertificateDto, imageUrl, pdfUrl);
   }

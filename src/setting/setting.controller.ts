@@ -3,19 +3,23 @@ import { SettingService } from './setting.service';
 import { UpdateSettingDto } from './dto/update-setting.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
+import { diskStorage, memoryStorage } from 'multer';
 import { extname } from 'path';
 
-// Multer configuration for CV upload
+// Multer configuration for CV upload: Use memoryStorage on Vercel
+const cvStorage = process.env.VERCEL
+  ? memoryStorage()
+  : diskStorage({
+      destination: './uploads/cv',
+      filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        const ext = extname(file.originalname);
+        cb(null, `cv-${uniqueSuffix}${ext}`);
+      },
+    });
+
 const cvMulterOptions = {
-  storage: diskStorage({
-    destination: './uploads/cv',
-    filename: (req, file, cb) => {
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-      const ext = extname(file.originalname);
-      cb(null, `cv-${uniqueSuffix}${ext}`);
-    },
-  }),
+  storage: cvStorage,
   fileFilter: (req, file, cb) => {
     if (!file.originalname.match(/\.(pdf|doc|docx)$/)) {
       return cb(new BadRequestException('Only PDF or Word documents are allowed!'), false);
@@ -47,7 +51,8 @@ export class SettingController {
       throw new BadRequestException('File is required');
     }
     try {
-      const fileUrl = `/uploads/cv/${file.filename}`;
+      const filename = file.filename || `${Date.now()}-${file.originalname}`;
+      const fileUrl = `/uploads/cv/${filename}`;
       const result = await this.settingService.updateSettings({ cvUrl: fileUrl });
       return {
         success: true,

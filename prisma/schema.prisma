@@ -12,24 +12,24 @@ model Project {
   title       String
   description String
   techStack   String
-  icon        String?
   githubUrl   String?
   demoUrl     String?
-  order       Int      @default(0)
   createdAt   DateTime @default(now())
+  icon        String?
+  order       Int      @default(0)
 }
 
 model Experience {
   id          Int      @id @default(autoincrement())
   role        String
   company     String
-  position    String?
   period      String
   location    String?
   logo        String?
-  description String   @default("")
-  order       Int      @default(0)
   createdAt   DateTime @default(now())
+  order       Int      @default(0)
+  description String   @default("")
+  position    String?
 }
 
 model Skill {
@@ -37,11 +37,10 @@ model Skill {
   category  String
   icon      String?
   items     String   @default("")
-  order     Int      @default(0)
   createdAt DateTime @default(now())
+  order     Int      @default(0)
 }
 
-// Model untuk menyimpan data Admin yang bisa login
 model Admin {
   id        Int      @id @default(autoincrement())
   email     String   @unique
@@ -49,20 +48,18 @@ model Admin {
   createdAt DateTime @default(now())
 }
 
-// Model untuk menyimpan data Sertifikat portofolio
 model Certificate {
   id            Int      @id @default(autoincrement())
   title         String
   description   String?
   credentialUrl String?
-  fileUrl       String?  // Image/thumbnail untuk preview di kartu
-  pdfUrl        String?  // File PDF untuk sertifikat lengkap
+  fileUrl       String?
   isPdf         Boolean  @default(false)
-  order         Int      @default(0)
   createdAt     DateTime @default(now())
+  order         Int      @default(0)
+  pdfUrl        String?
 }
 
-// Model untuk menyimpan data About Me card
 model AboutCard {
   id        Int      @id @default(autoincrement())
   title     String
@@ -73,25 +70,23 @@ model AboutCard {
   createdAt DateTime @default(now())
 }
 
-// Model untuk menyimpan pengaturan umum website seperti Announcement Banner
 model SiteSetting {
   id                 Int      @id @default(1)
   announcementText   String   @default("⚠️ This website is still under development ⚠️")
   announcementActive Boolean  @default(true)
-  bannerColor        String   @default("#4f46e5") // indigo-600
-  textColor          String   @default("#ffffff") // white
-  animationSpeed     Int      @default(25)        // seconds
+  bannerColor        String   @default("#4f46e5")
+  textColor          String   @default("#ffffff")
+  animationSpeed     Int      @default(25)
   cvUrl              String?
   updatedAt          DateTime @updatedAt
 }
 
-// Model untuk menyimpan CV
 model CV {
-  id        Int      @id @default(autoincrement())
-  fileName  String
-  fileUrl   String   @unique
-  fileSize  Int      // in bytes
-  mimeType  String   @default("application/pdf")
+  id         Int      @id @default(autoincrement())
+  fileName   String
+  fileUrl    String   @unique
+  fileSize   Int
+  mimeType   String   @default("application/pdf")
   uploadedAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt  DateTime @updatedAt
 }

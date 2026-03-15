@@ -1,0 +1,13 @@
+{
+  "buildCommand": "npm run build && prisma generate",
+  "outputDirectory": "dist",
+  "functions": {
+    "api/[...route].ts": {
+      "maxDuration": 30,
+      "memory": 1024
+    }
+  },
+  "env": {
+    "NODE_ENV": "production"
+  }
+}

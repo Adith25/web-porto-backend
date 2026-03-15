@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm run build && prisma generate",
+  "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "functions": {
     "api/[...route].ts": {

@@ -15,21 +15,36 @@ function getOrCreatePool(): Pool {
   if (!globalPool) {
     const connectionString = process.env.DATABASE_URL;
     if (!connectionString) {
-      throw new Error('DATABASE_URL environment variable is not set');
+      const error = 'DATABASE_URL environment variable is not set';
+      logger.error(error);
+      throw new Error(error);
     }
 
-    globalPool = new Pool({
-      connectionString,
-      ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
-      // Serverless-optimized pool settings
-      max: 1, // Limit connections in serverless
-      idleTimeoutMillis: 30000,
-      connectionTimeoutMillis: 5000,
-    });
+    logger.log(`Connecting to PostgreSQL: ${connectionString.split('@')[1] || 'unknown'}`);
 
-    globalPool.on('error', (err) => {
-      logger.error('Unexpected error on idle client', err);
-    });
+    try {
+      globalPool = new Pool({
+        connectionString,
+        ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+        // Serverless-optimized pool settings
+        max: 1, // Limit connections in serverless
+        idleTimeoutMillis: 30000,
+        connectionTimeoutMillis: 5000,
+      });
+
+      globalPool.on('error', (err) => {
+        logger.error('Unexpected error on idle client', err);
+      });
+
+      globalPool.on('connect', () => {
+        logger.debug('New PostgreSQL connection established');
+      });
+
+      logger.log('PostgreSQL pool created successfully');
+    } catch (error) {
+      logger.error('Failed to create PostgreSQL pool', error);
+      throw error;
+    }
   }
   return globalPool;
 }
@@ -37,47 +52,66 @@ function getOrCreatePool(): Pool {
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
   constructor() {
-    const pool = getOrCreatePool();
-    const adapter = new PrismaPg(pool);
-    super({ adapter });
+    logger.log('Initializing PrismaService...');
+    try {
+      const pool = getOrCreatePool();
+      const adapter = new PrismaPg(pool);
+      super({ adapter });
+      logger.log('PrismaClient initialized with PostgreSQL adapter');
+    } catch (error) {
+      logger.error('Failed to initialize PrismaClient', error);
+      throw error;
+    }
   }
 
   async onModuleInit() {
+    logger.log('PrismaService.onModuleInit() called');
     try {
       // Only connect/initialize once per module lifecycle
       if (!initPromise) {
         initPromise = this.initializeConnection();
       }
       await initPromise;
+      logger.log('✓ PrismaService initialized');
     } catch (error) {
-      logger.error('Failed to initialize Prisma Service', error);
+      logger.error('✗ Failed to initialize Prisma Service', error);
       throw error;
     }
   }
 
   private async initializeConnection() {
+    logger.log('Attempting database connection...');
     try {
       await this.$connect();
-      logger.log('Prisma connected to database');
+      logger.log('✓ Prisma connected to database');
       await this.seedAdmin();
     } catch (error) {
-      logger.error('Prisma connection failed', error);
+      logger.error('✗ Prisma connection failed', error instanceof Error ? error.message : String(error));
       throw error;
     }
   }
 
   async onModuleDestroy() {
+    logger.log('PrismaService.onModuleDestroy() called');
     // Don't disconnect in serverless environment to reuse connection
     if (process.env.VERCEL !== 'true') {
-      await this.$disconnect();
-      logger.log('Prisma disconnected');
+      try {
+        await this.$disconnect();
+        logger.log('Prisma disconnected');
+      } catch (error) {
+        logger.warn('Error disconnecting Prisma', error);
+      }
+    } else {
+      logger.log('Skipping disconnect in Vercel serverless (connection will be reused)');
     }
   }
 
   private async seedAdmin() {
+    logger.log('Checking for admin user...');
     try {
       const adminCount = await this.admin.count();
       if (adminCount === 0) {
+        logger.log('No admin found, creating default admin...');
         const hashedPassword = await bcrypt.hash('admin', 10);
         await this.admin.create({
           data: {
@@ -85,10 +119,12 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
             password: hashedPassword,
           },
         });
-        logger.log('Seeded default admin (admin@example.com / admin)');
+        logger.log('✓ Seeded default admin (admin@example.com / admin)');
+      } else {
+        logger.log(`✓ Admin user exists (${adminCount} admin(s))`);
       }
     } catch (error) {
-      logger.warn('Failed to seed admin user or admin already exists', error);
+      logger.warn('Failed to seed admin user or admin already exists', error instanceof Error ? error.message : String(error));
       // Don't throw - admin might already exist
     }
   }

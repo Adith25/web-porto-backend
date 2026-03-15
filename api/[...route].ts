@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import 'dotenv/config';
 import express from 'express';
 import serverless from 'serverless-http';
+import { createNestApp } from '../src/bootstrap';
 
 // Set environment early
 process.env.VERCEL = 'true';
@@ -12,9 +13,6 @@ let cachedServer: any;
 async function bootstrap() {
   if (!cachedServer) {
     try {
-      // Import bootstrap function from source
-      const { createNestApp } = await import('../src/bootstrap');
-
       // Create and initialize NestJS app
       await createNestApp(expressApp);
 

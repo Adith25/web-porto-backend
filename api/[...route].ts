@@ -12,8 +12,8 @@ let cachedServer: any;
 async function bootstrap() {
   if (!cachedServer) {
     try {
-      // Import bootstrap function from compiled source
-      const { createNestApp } = await import('../dist/src/bootstrap');
+      // Import bootstrap function from source
+      const { createNestApp } = await import('../src/bootstrap');
 
       // Create and initialize NestJS app
       await createNestApp(expressApp);

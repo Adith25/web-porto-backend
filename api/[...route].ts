@@ -43,9 +43,5 @@ export default async function handler(req: any, res: any) {
       error: error instanceof Error ? error.message : 'Unknown error',
     });
   }
-};
+}
 
-export default async function handler(req: any, res: any) {
-  const server = await bootstrap();
-  return server(req, res);
-};

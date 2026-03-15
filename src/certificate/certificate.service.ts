@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { join } from 'path';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateCertificateDto } from './dto/create-certificate.dto';
 import { UpdateCertificateDto } from './dto/update-certificate.dto';
@@ -10,14 +11,15 @@ export class CertificateService {
   constructor(private prisma: PrismaService) {}
 
   // Menyimpan data sertifikat beserta URL file ke dalam DB
-  async create(createCertificateDto: CreateCertificateDto, fileUrl: string) {
+  async create(createCertificateDto: CreateCertificateDto, imageUrl: string, pdfUrl?: string | null) {
     return this.prisma.certificate.create({
       data: {
         title: createCertificateDto.title,
         description: createCertificateDto.description,
         credentialUrl: createCertificateDto.credentialUrl,
-        fileUrl: fileUrl,
-        isPdf: createCertificateDto.isPdf === 'true', // Mengonversi string ke boolean
+        fileUrl: imageUrl,
+        pdfUrl: pdfUrl || null,
+        isPdf: !!pdfUrl, // True if PDF file is uploaded, false otherwise
       },
     });
   }
@@ -45,15 +47,50 @@ export class CertificateService {
     return { success: true };
   }
 
-  // Memperbarui sebagian field tanpa mengubah file. 
-  async update(id: number, updateCertificateDto: UpdateCertificateDto) {
+  // Memperbarui sebagian field atau juga mengubah file. 
+  async update(id: number, updateCertificateDto: UpdateCertificateDto, imageUrl?: string, pdfUrl?: string) {
+    const existing = await this.findOne(id);
+    
+    const data: any = {
+      title: updateCertificateDto.title,
+      description: updateCertificateDto.description,
+      credentialUrl: updateCertificateDto.credentialUrl,
+    };
+
+    if (imageUrl) {
+      // Hapus file lama jika ada dan berbeda
+      if (existing.fileUrl && existing.fileUrl !== imageUrl) {
+        try {
+          const oldPath = join(process.cwd(), existing.fileUrl);
+          if (require('fs').existsSync(oldPath)) {
+            require('fs').unlinkSync(oldPath);
+          }
+        } catch (e) {
+          console.error('Failed to delete old image file:', e);
+        }
+      }
+      data.fileUrl = imageUrl;
+    }
+
+    if (pdfUrl !== undefined) {
+      // Hapus PDF lama jika ada dan berbeda
+      if (existing.pdfUrl && existing.pdfUrl !== pdfUrl) {
+        try {
+          const oldPath = join(process.cwd(), existing.pdfUrl);
+          if (require('fs').existsSync(oldPath)) {
+            require('fs').unlinkSync(oldPath);
+          }
+        } catch (e) {
+          console.error('Failed to delete old PDF file:', e);
+        }
+      }
+      data.pdfUrl = pdfUrl;
+      data.isPdf = !!pdfUrl;
+    }
+
     return this.prisma.certificate.update({
       where: { id },
-      data: {
-        title: updateCertificateDto.title,
-        description: updateCertificateDto.description,
-        credentialUrl: updateCertificateDto.credentialUrl,
-      },
+      data,
     });
   }
 
@@ -61,11 +98,19 @@ export class CertificateService {
   async remove(id: number) {
     const certificate = await this.findOne(id);
     
-    // Hapus file fisik jika ada
+    // Hapus file image
     if (certificate.fileUrl) {
       const filePath = path.join(process.cwd(), certificate.fileUrl);
       if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
+      }
+    }
+
+    // Hapus file PDF jika ada
+    if (certificate.pdfUrl) {
+      const pdfPath = path.join(process.cwd(), certificate.pdfUrl);
+      if (fs.existsSync(pdfPath)) {
+        fs.unlinkSync(pdfPath);
       }
     }
 

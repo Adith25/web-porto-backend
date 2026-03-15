@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, UseGuards, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFiles, UseGuards, BadRequestException } from '@nestjs/common';
 import { CertificateService } from './certificate.service';
 import { CreateCertificateDto } from './dto/create-certificate.dto';
 import { UpdateCertificateDto } from './dto/update-certificate.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
@@ -19,9 +19,17 @@ const multerOptions = {
     },
   }),
   fileFilter: (req, file, cb) => {
-    // Membatasi tipe file hanya gambar atau PDF
-    if (!file.originalname.match(/\.(jpg|jpeg|png|pdf)$/)) {
-      return cb(new BadRequestException('Only image or PDF files are allowed!'), false);
+    // Membatasi tipe file
+    if (file.fieldname === 'imageFile') {
+      // Image: jpg, jpeg, png
+      if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+        return cb(new BadRequestException('Image must be JPG, JPEG, or PNG!'), false);
+      }
+    } else if (file.fieldname === 'pdfFile') {
+      // PDF: only pdf
+      if (!file.originalname.match(/\.pdf$/)) {
+        return cb(new BadRequestException('Certificate must be PDF!'), false);
+      }
     }
     cb(null, true);
   },
@@ -32,19 +40,28 @@ export class CertificateController {
   constructor(private readonly certificateService: CertificateService) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard) // Melindungi endpoint dengan JWT supaya hanya Admin yang bisa akses
-  @UseInterceptors(FileInterceptor('file', multerOptions)) // Menerima payload file dengan field 'file'
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(FileFieldsInterceptor([
+    { name: 'imageFile', maxCount: 1 },
+    { name: 'pdfFile', maxCount: 1 }
+  ], multerOptions))
   create(
     @Body() createCertificateDto: CreateCertificateDto,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFiles() files: { imageFile?: Express.Multer.File[], pdfFile?: Express.Multer.File[] },
   ) {
-    if (!file) {
-      throw new BadRequestException('File is required');
+    if (!files.imageFile || files.imageFile.length === 0) {
+      throw new BadRequestException('Image file is required');
     }
     
-    // Path URL file yang diupload untuk disimpan di database
-    const fileUrl = `/uploads/certificates/${file.filename}`;
-    return this.certificateService.create(createCertificateDto, fileUrl);
+    const imageFile = files.imageFile[0];
+    const pdfFile = files.pdfFile?.[0];
+    
+    // Path URL untuk image
+    const imageUrl = `/uploads/certificates/${imageFile.filename}`;
+    // Path URL untuk PDF (jika ada)
+    const pdfUrl = pdfFile ? `/uploads/certificates/${pdfFile.filename}` : null;
+    
+    return this.certificateService.create(createCertificateDto, imageUrl, pdfUrl);
   }
 
   @Get()
@@ -59,8 +76,24 @@ export class CertificateController {
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
-  update(@Param('id') id: string, @Body() updateCertificateDto: UpdateCertificateDto) {
-    return this.certificateService.update(+id, updateCertificateDto);
+  @UseInterceptors(FileFieldsInterceptor([
+    { name: 'imageFile', maxCount: 1 },
+    { name: 'pdfFile', maxCount: 1 }
+  ], multerOptions))
+  update(
+    @Param('id') id: string, 
+    @Body() updateCertificateDto: UpdateCertificateDto,
+    @UploadedFiles() files: { imageFile?: Express.Multer.File[], pdfFile?: Express.Multer.File[] },
+  ) {
+    const imageFile = files.imageFile?.[0];
+    const pdfFile = files.pdfFile?.[0];
+    
+    // Path URL untuk image (jika diupload baru)
+    const imageUrl = imageFile ? `/uploads/certificates/${imageFile.filename}` : undefined;
+    // Path URL untuk PDF (jika diupload baru)
+    const pdfUrl = pdfFile ? `/uploads/certificates/${pdfFile.filename}` : undefined;
+
+    return this.certificateService.update(+id, updateCertificateDto, imageUrl, pdfUrl);
   }
 
   @Post('reorder')

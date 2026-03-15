@@ -54,7 +54,8 @@ model Certificate {
   title         String
   description   String?
   credentialUrl String?
-  fileUrl       String?
+  fileUrl       String?  // Image/thumbnail untuk preview di kartu
+  pdfUrl        String?  // File PDF untuk sertifikat lengkap
   isPdf         Boolean  @default(false)
   order         Int      @default(0)
   createdAt     DateTime @default(now())
@@ -81,4 +82,15 @@ model SiteSetting {
   animationSpeed     Int      @default(25)        // seconds
   cvUrl              String?
   updatedAt          DateTime @updatedAt
+}
+
+// Model untuk menyimpan CV
+model CV {
+  id        Int      @id @default(autoincrement())
+  fileName  String
+  fileUrl   String   @unique
+  fileSize  Int      // in bytes
+  mimeType  String   @default("application/pdf")
+  uploadedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

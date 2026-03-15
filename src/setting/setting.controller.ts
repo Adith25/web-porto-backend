@@ -46,7 +46,18 @@ export class SettingController {
     if (!file) {
       throw new BadRequestException('File is required');
     }
-    const fileUrl = `/uploads/cv/${file.filename}`;
-    return this.settingService.updateSettings({ cvUrl: fileUrl });
+    try {
+      const fileUrl = `/uploads/cv/${file.filename}`;
+      const result = await this.settingService.updateSettings({ cvUrl: fileUrl });
+      return {
+        success: true,
+        message: 'CV uploaded successfully',
+        cvUrl: fileUrl,
+        data: result,
+      };
+    } catch (error) {
+      console.error('CV upload error:', error);
+      throw new BadRequestException(`CV upload failed: ${error.message}`);
+    }
   }
 }

@@ -12,6 +12,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { SettingModule } from './setting/setting.module';
+import { CvModule } from './cv/cv.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { SettingModule } from './setting/setting.module';
       serveRoot: '/uploads',
     }),
     SettingModule,
+    CvModule,
   ],
   controllers: [AppController],
   providers: [AppService],

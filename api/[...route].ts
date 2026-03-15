@@ -39,6 +39,7 @@ export default async function handler(req: any, res: any) {
       statusCode: 500,
       message: 'Internal server error',
       error: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined,
     });
   }
 }

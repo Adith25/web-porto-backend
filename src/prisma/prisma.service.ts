@@ -25,7 +25,7 @@ function getOrCreatePool(): Pool {
     try {
       globalPool = new Pool({
         connectionString,
-        ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+        ssl: { rejectUnauthorized: false },
         // Serverless-optimized pool settings
         max: 1, // Limit connections in serverless
         idleTimeoutMillis: 30000,

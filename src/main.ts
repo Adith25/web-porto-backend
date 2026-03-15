@@ -27,7 +27,7 @@ async function bootstrap() {
 }
 
 // Only run bootstrap in non-serverless environments
-if (process.env.VERCEL !== 'true') {
+if (!process.env.VERCEL) {
   bootstrap().catch((error) => {
     logger.error('Failed to start server', error);
     process.exit(1);

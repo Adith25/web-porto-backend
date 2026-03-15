@@ -6,6 +6,10 @@
 
 import 'reflect-metadata';
 import 'dotenv/config';
+
+// Ensure we're running in serverless mode
+process.env.VERCEL = 'true';
+
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe, Logger } from '@nestjs/common';
 import { ExpressAdapter } from '@nestjs/platform-express';
@@ -34,7 +38,7 @@ async function bootstrap() {
   initPromise = (async () => {
     try {
       // Dynamically import compiled AppModule at runtime
-      const { AppModule } = await import('../dist/src/app.module');
+      const { AppModule } = await import('../dist/app.module');
 
       // Create Express app for NestJS to wrap
       const expressApp = express();

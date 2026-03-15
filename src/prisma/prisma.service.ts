@@ -94,7 +94,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
   async onModuleDestroy() {
     logger.log('PrismaService.onModuleDestroy() called');
     // Don't disconnect in serverless environment to reuse connection
-    if (process.env.VERCEL !== 'true') {
+    if (!process.env.VERCEL) {
       try {
         await this.$disconnect();
         logger.log('Prisma disconnected');

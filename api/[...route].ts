@@ -1,84 +1,31 @@
 import 'reflect-metadata';
-import 'dotenv/config';
-
-// Ensure we're running in serverless mode
-process.env.VERCEL = 'true';
-
-import { NestFactory } from '@nestjs/core';
-import { ValidationPipe, Logger } from '@nestjs/common';
-import { ExpressAdapter } from '@nestjs/platform-express';
 import express from 'express';
 import serverless from 'serverless-http';
-import { AppModule } from '../src/app.module';
+import { NestFactory } from '@nestjs/core';
+import { ExpressAdapter } from '@nestjs/platform-express';
 
-const logger = new Logger('VercelHandler');
-
-// Global cache for the serverless handler
-let cachedServer: any = null;
+const expressApp = express();
+let cachedServer: any;
 
 async function bootstrap() {
-  if (cachedServer) {
-    logger.debug('Reusing cached serverless handler');
-    return cachedServer;
-  }
+  if (!cachedServer) {
+    // Use require to load compiled module from dist
+    const { AppModule } = require('../dist/src/app.module');
 
-  logger.log('Initializing NestJS serverless handler...');
-
-  try {
-    // Create Express app for NestJS to wrap
-    const expressApp = express();
-
-    // Create NestJS app with Express adapter
     const nestApp = await NestFactory.create(
       AppModule,
       new ExpressAdapter(expressApp),
     );
 
-    // Configure NestJS
-    nestApp.enableCors({
-      origin: ['https://adityayufnanda.my.id', 'http://localhost:3000'],
-      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-      credentials: true,
-    });
-
-    nestApp.useGlobalPipes(
-      new ValidationPipe({
-        whitelist: true,
-        transform: true,
-      }),
-    );
-
-    // Initialize NestJS (don't call listen)
     await nestApp.init();
 
-    logger.log('✓ NestJS app initialized');
-
-    // Wrap Express app with serverless-http
     cachedServer = serverless(expressApp);
-
-    logger.log('✓ Serverless handler ready');
-
-    return cachedServer;
-  } catch (error) {
-    logger.error('Failed to initialize serverless handler', error);
-    throw error;
   }
+
+  return cachedServer;
 }
 
-export default async (req: any, res: any) => {
-  try {
-    logger.debug(`${req.method} ${req.url}`);
-    const server = await bootstrap();
-    return server(req, res);
-  } catch (error) {
-    logger.error('Handler error', error);
-
-    if (!res.headersSent) {
-      res.status(500).json({
-        statusCode: 500,
-        message: 'Internal server error',
-        timestamp: new Date().toISOString(),
-      });
-    }
-  }
+export default async function handler(req: any, res: any) {
+  const server = await bootstrap();
+  return server(req, res);
 };

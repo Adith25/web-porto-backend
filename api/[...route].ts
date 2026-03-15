@@ -1,79 +1,93 @@
 /**
  * Vercel Serverless Function Handler
  * This file is the entry point for all API requests in Vercel
- * It initializes NestJS and routes requests through Express
+ * Uses serverless-http to properly wrap the Express app with NestJS
  */
 
 import 'reflect-metadata';
 import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
-import { AppModule } from '../src/app.module';
-import type { NestExpressApplication } from '@nestjs/platform-express';
-import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { ValidationPipe, Logger } from '@nestjs/common';
+import { ExpressAdapter } from '@nestjs/platform-express';
+import express from 'express';
+import serverless from 'serverless-http';
 
-// Global app instance - reused across invocations
-let appInstance: NestExpressApplication | null = null;
-let initPromise: Promise<NestExpressApplication> | null = null;
+const logger = new Logger('VercelHandler');
 
-async function createApp(): Promise<NestExpressApplication> {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    bufferLogs: true,
-  });
+// Global cache for the serverless handler
+let cachedServer: any = null;
+let initPromise: Promise<any> | null = null;
 
-  app.enableCors({
-    origin: ['https://adityayufnanda.my.id', 'http://localhost:3000'],
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-  });
-
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      transform: true,
-    }),
-  );
-
-  // Initialize app without listening
-  await app.init();
-
-  return app;
-}
-
-async function getApp(): Promise<NestExpressApplication> {
-  if (appInstance) {
-    return appInstance;
+async function bootstrap() {
+  if (cachedServer) {
+    logger.debug('Reusing cached serverless handler');
+    return cachedServer;
   }
 
-  if (!initPromise) {
-    initPromise = createApp();
+  if (initPromise) {
+    logger.debug('Waiting for handler initialization');
+    return initPromise;
   }
 
-  try {
-    appInstance = await initPromise;
-    return appInstance;
-  } catch (error) {
-    console.error('Failed to initialize app:', error);
-    // Reset promise on error so next invocation can retry
-    initPromise = null;
-    throw error;
-  }
-}
+  logger.log('Initializing NestJS serverless handler...');
 
-export default async (req: VercelRequest, res: VercelResponse) => {
-  try {
-    const app = await getApp();
-    const server = app.getHttpAdapter().getInstance();
-    
-    if (!server) {
-      throw new Error('Express server not initialized');
+  initPromise = (async () => {
+    try {
+      // Dynamically import compiled AppModule at runtime
+      const { AppModule } = await import('../dist/src/app.module');
+
+      // Create Express app for NestJS to wrap
+      const expressApp = express();
+
+      // Create NestJS app with Express adapter
+      const nestApp = await NestFactory.create(
+        AppModule,
+        new ExpressAdapter(expressApp),
+      );
+
+      // Configure NestJS
+      nestApp.enableCors({
+        origin: ['https://adityayufnanda.my.id', 'http://localhost:3000'],
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        credentials: true,
+      });
+
+      nestApp.useGlobalPipes(
+        new ValidationPipe({
+          whitelist: true,
+          transform: true,
+        }),
+      );
+
+      // Initialize NestJS (don't call listen)
+      await nestApp.init();
+
+      logger.log('✓ NestJS app initialized');
+
+      // Wrap Express app with serverless-http
+      cachedServer = serverless(expressApp);
+
+      logger.log('✓ Serverless handler ready');
+
+      return cachedServer;
+    } catch (error) {
+      logger.error('Failed to initialize serverless handler', error);
+      initPromise = null; // Reset on error so next invocation can retry
+      throw error;
     }
+  })();
 
-    // Handle the request with Express
+  return initPromise;
+}
+
+export default async (req: any, res: any) => {
+  try {
+    logger.debug(`${req.method} ${req.url}`);
+    const server = await bootstrap();
     return server(req, res);
   } catch (error) {
-    console.error('[Vercel Handler] Error:', error);
-    
+    logger.error('Handler error', error);
+
     if (!res.headersSent) {
       res.status(500).json({
         statusCode: 500,

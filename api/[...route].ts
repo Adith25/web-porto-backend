@@ -37,8 +37,8 @@ async function bootstrap() {
 
   initPromise = (async () => {
     try {
-      // Dynamically import compiled AppModule at runtime
-      const { AppModule } = await import('../dist/app.module');
+      // Dynamically import AppModule from source
+      const { AppModule } = await import('../src/app.module');
 
       // Create Express app for NestJS to wrap
       const expressApp = express();

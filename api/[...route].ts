@@ -13,13 +13,14 @@ let cachedServer: any;
 async function bootstrap() {
   if (!cachedServer) {
     try {
+      console.log('Starting NestJS initialization...');
       // Create and initialize NestJS app
       await createNestApp(expressApp);
+      console.log('NestJS app created and initialized');
 
       // Wrap with serverless-http
       cachedServer = serverless(expressApp);
-
-      console.log('✓ Serverless handler initialized');
+      console.log('✓ Serverless handler wrapped');
     } catch (error) {
       console.error('Failed to initialize handler:', error);
       throw error;
@@ -30,6 +31,11 @@ async function bootstrap() {
 }
 
 export default async function handler(req: any, res: any) {
+  // Simple health check to verify the handler works
+  if (req.url === '/api/health') {
+    return res.status(200).json({ status: 'ok', message: 'Handler is alive' });
+  }
+
   try {
     const server = await bootstrap();
     return server(req, res);

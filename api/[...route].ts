@@ -2,25 +2,9 @@ import 'reflect-metadata';
 import 'dotenv/config';
 import express from 'express';
 import serverless from 'serverless-http';
-import { NestFactory } from '@nestjs/core';
-import { ExpressAdapter } from '@nestjs/platform-express';
-import { ValidationPipe } from '@nestjs/common';
 
-// Load AppModule from compiled source
-let AppModule: any;
-
-async function getAppModule() {
-  if (!AppModule) {
-    try {
-      // Try loading from compiled dist first
-      AppModule = (await import('../src/app.module')).AppModule;
-    } catch (error) {
-      console.error('Failed to load AppModule:', error);
-      throw new Error('AppModule not found');
-    }
-  }
-  return AppModule;
-}
+// Set environment early
+process.env.VERCEL = 'true';
 
 const expressApp = express();
 let cachedServer: any;
@@ -28,36 +12,38 @@ let cachedServer: any;
 async function bootstrap() {
   if (!cachedServer) {
     try {
-      const appModule = await getAppModule();
+      // Import bootstrap function from compiled source
+      const { createNestApp } = await import('../dist/src/bootstrap');
 
-      const nestApp = await NestFactory.create(
-        appModule,
-        new ExpressAdapter(expressApp),
-      );
+      // Create and initialize NestJS app
+      await createNestApp(expressApp);
 
-      nestApp.enableCors({
-        origin: ['https://adityayufnanda.my.id', 'http://localhost:3000'],
-        credentials: true,
-      });
-
-      nestApp.useGlobalPipes(
-        new ValidationPipe({
-          whitelist: true,
-          transform: true,
-        }),
-      );
-
-      await nestApp.init();
-
+      // Wrap with serverless-http
       cachedServer = serverless(expressApp);
+
+      console.log('✓ Serverless handler initialized');
     } catch (error) {
-      console.error('NestJS initialization error:', error);
+      console.error('Failed to initialize handler:', error);
       throw error;
     }
   }
 
   return cachedServer;
 }
+
+export default async function handler(req: any, res: any) {
+  try {
+    const server = await bootstrap();
+    return server(req, res);
+  } catch (error) {
+    console.error('Handler invocation error:', error);
+    return res.status(500).json({
+      statusCode: 500,
+      message: 'Internal server error',
+      error: error instanceof Error ? error.message : 'Unknown error',
+    });
+  }
+};
 
 export default async function handler(req: any, res: any) {
   const server = await bootstrap();

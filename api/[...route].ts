@@ -4,12 +4,10 @@ import { AppModule } from '../src/app.module'
 import { ExpressAdapter } from '@nestjs/platform-express'
 import express from 'express'
 
-let cachedServer: any
+let server
 
 async function bootstrap() {
-  if (cachedServer) {
-    return cachedServer
-  }
+  if (server) return server
 
   const expressApp = express()
 
@@ -18,19 +16,14 @@ async function bootstrap() {
     new ExpressAdapter(expressApp),
   )
 
-  app.enableCors({
-    origin: ['https://adityayufnanda.my.id', 'http://localhost:3000'],
-    credentials: true,
-  })
-
   await app.init()
 
-  cachedServer = expressApp
+  server = expressApp
 
-  return cachedServer
+  return server
 }
 
-export default async function handler(req: any, res: any) {
-  const server = await bootstrap()
-  return server(req, res)
+export default async function handler(req, res) {
+  const app = await bootstrap()
+  return app(req, res)
 }

@@ -3,10 +3,22 @@ import { NestFactory } from '@nestjs/core'
 import { AppModule } from '../src/app.module'
 import { ExpressAdapter } from '@nestjs/platform-express'
 import express from 'express'
+import { existsSync, mkdirSync } from 'fs'
+import { join } from 'path'
 
 let cachedApp: any
 
 async function bootstrap() {
+  const uploadsPath = join(process.cwd(), 'uploads')
+  const certificatesPath = join(uploadsPath, 'certificates')
+  const cvPath = join(uploadsPath, 'cv')
+
+  ;[uploadsPath, certificatesPath, cvPath].forEach((path) => {
+    if (!existsSync(path)) {
+      mkdirSync(path, { recursive: true })
+    }
+  })
+
   if (cachedApp) {
     return cachedApp
   }

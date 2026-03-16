@@ -11,17 +11,8 @@ import { AboutCardModule } from './about-card/about-card.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { existsSync } from 'fs';
 import { SettingModule } from './setting/setting.module';
 import { CvModule } from './cv/cv.module';
-
-// Determine static file serving path for both local and serverless environments
-const getUploadsPath = () => {
-  const uploadsPath = join(process.cwd(), 'uploads');
-  return existsSync(uploadsPath) ? uploadsPath : null;
-};
-
-const uploadsPath = getUploadsPath();
 
 @Module({
   imports: [
@@ -33,10 +24,10 @@ const uploadsPath = getUploadsPath();
     SkillModule,
     AboutCardModule,
     PrismaModule,
-    ...(uploadsPath ? [ServeStaticModule.forRoot({
-      rootPath: uploadsPath,
+    ServeStaticModule.forRoot({
+      rootPath: join(process.cwd(), 'uploads'),
       serveRoot: '/uploads',
-    })] : []),
+    }),
     SettingModule,
     CvModule,
   ],

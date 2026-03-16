@@ -1,10 +1,22 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe, Logger } from '@nestjs/common';
+import { existsSync, mkdirSync } from 'fs';
+import { join } from 'path';
 
 const logger = new Logger('Main');
 
 async function bootstrap() {
+  const uploadsPath = join(process.cwd(), 'uploads');
+  const certificatesPath = join(uploadsPath, 'certificates');
+  const cvPath = join(uploadsPath, 'cv');
+
+  [uploadsPath, certificatesPath, cvPath].forEach((path) => {
+    if (!existsSync(path)) {
+      mkdirSync(path, { recursive: true });
+    }
+  });
+
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({

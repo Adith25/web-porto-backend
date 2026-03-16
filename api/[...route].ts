@@ -1,43 +1,36 @@
-import 'reflect-metadata';
-import 'dotenv/config';
-import express from 'express';
-import serverless from 'serverless-http';
-import { createNestApp } from '../src/bootstrap';
+import 'reflect-metadata'
+import { NestFactory } from '@nestjs/core'
+import { AppModule } from '../src/app.module'
+import { ExpressAdapter } from '@nestjs/platform-express'
+import express from 'express'
 
-// Set environment early
-process.env.VERCEL = 'true';
-
-const expressApp = express();
-let cachedServer: any;
+let cachedServer: any
 
 async function bootstrap() {
-  if (!cachedServer) {
-    try {
-      console.log('Initializing NestJS for Vercel...');
-      await createNestApp(expressApp);
-      cachedServer = serverless(expressApp);
-      console.log('✓ NestJS initialized successfully');
-    } catch (error) {
-      console.error('Failed to initialize NestJS:', error);
-      throw error;
-    }
+  if (cachedServer) {
+    return cachedServer
   }
-  return cachedServer;
+
+  const expressApp = express()
+
+  const app = await NestFactory.create(
+    AppModule,
+    new ExpressAdapter(expressApp),
+  )
+
+  app.enableCors({
+    origin: ['https://adityayufnanda.my.id', 'http://localhost:3000'],
+    credentials: true,
+  })
+
+  await app.init()
+
+  cachedServer = expressApp
+
+  return cachedServer
 }
 
 export default async function handler(req: any, res: any) {
-  try {
-    const server = await bootstrap();
-    return server(req, res);
-  } catch (error) {
-    console.error('Critical Handler Error:', error);
-    return res.status(500).json({
-      statusCode: 500,
-      message: 'Internal server error during NestJS initialization',
-      error: error instanceof Error ? error.message : String(error),
-    });
-  }
+  const server = await bootstrap()
+  return server(req, res)
 }
-
-
-

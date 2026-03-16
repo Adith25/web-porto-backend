@@ -4,26 +4,28 @@ import { AppModule } from '../src/app.module'
 import { ExpressAdapter } from '@nestjs/platform-express'
 import express from 'express'
 
-let server
+let cachedApp: any
 
 async function bootstrap() {
-  if (server) return server
+  if (cachedApp) {
+    return cachedApp
+  }
 
-  const expressApp = express()
+  const server = express()
 
   const app = await NestFactory.create(
     AppModule,
-    new ExpressAdapter(expressApp),
+    new ExpressAdapter(server),
   )
 
   await app.init()
 
-  server = expressApp
+  cachedApp = server
 
   return server
 }
 
-export default async function handler(req, res) {
+export default async function handler(req: any, res: any) {
   const app = await bootstrap()
   return app(req, res)
 }

@@ -26,7 +26,6 @@ import { CvModule } from './cv/cv.module';
     PrismaModule,
     ServeStaticModule.forRoot({
       rootPath: join(process.cwd(), 'uploads'),
-      serveRoot: '/uploads',
     }),
     SettingModule,
     CvModule,

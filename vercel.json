@@ -2,7 +2,7 @@
   "buildCommand": "npm run build",
   "functions": {
     "api/[...route].ts": {
-      "runtime": "nodejs18.x"
+      "maxDuration": 30
     }
   }
 }

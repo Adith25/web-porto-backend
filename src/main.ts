@@ -21,7 +21,11 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: ['https://adityayufnanda.my.id', 'http://localhost:3000'],
+    origin: [
+      'https://adityayufnanda.my.id', 
+      'http://localhost:3000',
+      'http://127.0.0.1:3000'
+    ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
@@ -46,7 +50,7 @@ async function bootstrap() {
   SwaggerModule.setup('api/docs', app, document);
 
   // 🔥 LISTEN HARUS DI PALING AKHIR
-  const port = process.env.PORT || 3000;
+  const port = process.env.PORT || 3001;
   await app.listen(port);
 
   logger.log(`Server running on port ${port}`);

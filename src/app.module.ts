@@ -12,6 +12,7 @@ import { SkillModule } from './skill/skill.module'
 import { CvModule } from './cv/cv.module'
 import { AboutCardModule } from './about-card/about-card.module'
 import { SettingModule } from './setting/setting.module'
+import { MessageModule } from './message/message.module'
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { SettingModule } from './setting/setting.module'
     CvModule,
     AboutCardModule,
     SettingModule,
+    MessageModule,
   ],
 })
 export class AppModule {}

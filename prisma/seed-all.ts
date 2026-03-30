@@ -17,7 +17,7 @@ const techStack = [
   {
     category: "Tools",
     icon: "mdi:wrench-outline",
-    items: "Git, Docker, Firebase, Railway",
+    items: "Git, Docker, Firebase, Railway, Trello",
   },
   {
     category: "ML",

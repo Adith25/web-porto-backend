@@ -11,8 +11,13 @@ export class ProjectService {
     return this.prisma.project.findMany({ orderBy: { order: 'asc' } });
   }
 
-  create(dto: CreateProjectDto) {
-    return this.prisma.project.create({ data: dto });
+  async create(dto: CreateProjectDto) {
+    const lastItem = await this.prisma.project.findFirst({
+      orderBy: { order: 'desc' },
+      select: { order: true },
+    });
+    const order = lastItem ? lastItem.order + 1 : 0;
+    return this.prisma.project.create({ data: { ...dto, order } });
   }
 
   update(id: number, dto: UpdateProjectDto) {

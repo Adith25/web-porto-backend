@@ -11,8 +11,13 @@ export class SkillService {
     return this.prisma.skill.findMany({ orderBy: { order: 'asc' } });
   }
 
-  create(dto: CreateSkillDto) {
-    return this.prisma.skill.create({ data: dto });
+  async create(dto: CreateSkillDto) {
+    const lastItem = await this.prisma.skill.findFirst({
+      orderBy: { order: 'desc' },
+      select: { order: true },
+    });
+    const order = lastItem ? lastItem.order + 1 : 0;
+    return this.prisma.skill.create({ data: { ...dto, order } });
   }
 
   update(id: number, dto: UpdateSkillDto) {

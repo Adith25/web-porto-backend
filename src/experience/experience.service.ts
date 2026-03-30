@@ -11,8 +11,13 @@ export class ExperienceService {
     return this.prisma.experience.findMany({ orderBy: { order: 'asc' } });
   }
 
-  create(dto: CreateExperienceDto) {
-    return this.prisma.experience.create({ data: dto });
+  async create(dto: CreateExperienceDto) {
+    const lastItem = await this.prisma.experience.findFirst({
+      orderBy: { order: 'desc' },
+      select: { order: true },
+    });
+    const order = lastItem ? lastItem.order + 1 : 0;
+    return this.prisma.experience.create({ data: { ...dto, order } });
   }
 
   update(id: number, dto: UpdateExperienceDto) {

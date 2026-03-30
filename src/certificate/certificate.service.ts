@@ -12,6 +12,11 @@ export class CertificateService {
 
   // Menyimpan data sertifikat beserta URL file ke dalam DB
   async create(createCertificateDto: CreateCertificateDto, imageUrl: string, pdfUrl?: string | null) {
+    const lastItem = await this.prisma.certificate.findFirst({
+      orderBy: { order: 'desc' },
+      select: { order: true },
+    });
+    const order = lastItem ? lastItem.order + 1 : 0;
     return this.prisma.certificate.create({
       data: {
         title: createCertificateDto.title,
@@ -19,7 +24,8 @@ export class CertificateService {
         credentialUrl: createCertificateDto.credentialUrl,
         fileUrl: imageUrl,
         pdfUrl: pdfUrl || null,
-        isPdf: !!pdfUrl, // True if PDF file is uploaded, false otherwise
+        isPdf: !!pdfUrl,
+        order,
       },
     });
   }

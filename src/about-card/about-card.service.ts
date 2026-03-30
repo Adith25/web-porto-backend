@@ -11,8 +11,13 @@ export class AboutCardService {
     return this.prisma.aboutCard.findMany({ orderBy: { order: 'asc' } });
   }
 
-  create(dto: CreateAboutCardDto) {
-    return this.prisma.aboutCard.create({ data: dto });
+  async create(dto: CreateAboutCardDto) {
+    const lastItem = await this.prisma.aboutCard.findFirst({
+      orderBy: { order: 'desc' },
+      select: { order: true },
+    });
+    const order = lastItem ? lastItem.order + 1 : 0;
+    return this.prisma.aboutCard.create({ data: { ...dto, order } });
   }
 
   update(id: number, dto: UpdateAboutCardDto) {

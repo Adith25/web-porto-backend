@@ -13,8 +13,8 @@ docker-compose.yml
 jest.config.js
 Dockerfile
 .dockerignore
-uploads/certificates
-uploads/cv
+# uploads/certificates
+# uploads/cv
 .prettierrc
 eslint.config.mjs
 source-map-support

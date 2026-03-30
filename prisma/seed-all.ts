@@ -7,7 +7,7 @@ const techStack = [
   {
     category: "Backend",
     icon: "mdi:server",
-    items: "NestJS, TypeScript, MySQL, PostgreSQL",
+    items: "NestJS, TypeScript, Python, MySQL, PostgreSQL",
   },
   {
     category: "Design",
@@ -17,12 +17,12 @@ const techStack = [
   {
     category: "Tools",
     icon: "mdi:wrench-outline",
-    items: "Git, Docker, Firebase",
+    items: "Git, Docker, Firebase, Railway",
   },
   {
     category: "ML",
     icon: "mdi:brain",
-    items: "Python, TensorFlow, PyTorch, OpenCV",
+    items: "Python, TensorFlow, PyTorch, Gemini AI, OpenCV",
   },
   {
     category: "Embedded",

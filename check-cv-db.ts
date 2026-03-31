@@ -9,7 +9,7 @@ async function main() {
   console.log('Current cvUrl in SiteSetting:', setting?.cvUrl);
   
   const cv = await prisma.cV.findFirst({
-    orderBy: { createdAt: 'desc' },
+    orderBy: { uploadedAt: 'desc' },
   });
   console.log('Latest CV in CV table:', cv);
 }

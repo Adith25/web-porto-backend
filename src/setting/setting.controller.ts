@@ -65,4 +65,9 @@ export class SettingController {
       throw new BadRequestException(`CV upload failed: ${error.message}`);
     }
   }
+
+  @Post('increment-visitor')
+  async incrementVisitorCount() {
+    return this.settingService.incrementVisitorCount();
+  }
 }

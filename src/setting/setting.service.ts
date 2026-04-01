@@ -50,4 +50,22 @@ export class SettingService {
       throw error;
     }
   }
+
+  async incrementVisitorCount() {
+    const setting = await this.getSettings();
+    const updateSetting = this.prisma.siteSetting.update({
+      where: { id: setting.id },
+      data: {
+        visitorCount: {
+          increment: 1,
+        },
+      },
+    });
+    const logVisitor = this.prisma.visitorLog.create({
+      data: {},
+    });
+    
+    const [result] = await Promise.all([updateSetting, logVisitor]);
+    return result;
+  }
 }

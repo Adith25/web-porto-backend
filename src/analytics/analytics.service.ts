@@ -15,14 +15,22 @@ export class AnalyticsService {
         startDate = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
         break;
       case '6m':
-        startDate = new Date(now.getFullYear(), now.getMonth() - 6, 1);
+        // Start from exactly 5 months ago
+        startDate = new Date(now.getFullYear(), now.getMonth() - 5, 1);
         break;
       case '12m':
-        startDate = new Date(now.getFullYear(), now.getMonth() - 12, 1);
+        // Start from exactly 11 months ago, bringing us up to the current 12th month
+        startDate = new Date(now.getFullYear(), now.getMonth() - 11, 1);
         break;
       case 'all':
       default:
-        startDate = new Date(0); // Beginning of time
+        // Find the date of the first log
+        const firstLog = await this.prisma.visitorLog.findFirst({
+          orderBy: { createdAt: 'asc' }
+        });
+        startDate = firstLog ? firstLog.createdAt : new Date();
+        // Snap to beginning of that month
+        startDate = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
         break;
     }
 
@@ -49,8 +57,9 @@ export class AnalyticsService {
     if (setting && data.length > 0) {
       const diff = setting.visitorCount - totalLogsCount;
       if (diff > 0) {
-        // Add the difference to the oldest data point to keep them in sync
-        data[0].count += diff;
+        // Add the difference to the LATEST data point (current) to keep them in sync
+        // while maintaining chronological sense (since they were already present)
+        data[data.length - 1].count += diff;
       }
     }
 
@@ -60,18 +69,19 @@ export class AnalyticsService {
   private aggregateByDay(logs: any[], start: Date, end: Date) {
     const counts = new Map<string, number>();
     
-    // Initialize all days in range with 0
+    // Initialize all days in range with 0 using Jakarta timezone
     let current = new Date(start);
     while (current <= end) {
-      counts.set(current.toISOString().split('T')[0], 0);
+      const key = current.toLocaleDateString('en-CA', { timeZone: 'Asia/Jakarta' });
+      counts.set(key, 0);
       current.setDate(current.getDate() + 1);
     }
 
-    // Count logs
+    // Count logs using Jakarta timezone
     logs.forEach(log => {
-      const date = log.createdAt.toISOString().split('T')[0];
-      if (counts.has(date)) {
-        counts.set(date, (counts.get(date) || 0) + 1);
+      const key = log.createdAt.toLocaleDateString('en-CA', { timeZone: 'Asia/Jakarta' });
+      if (counts.has(key)) {
+        counts.set(key, (counts.get(key) || 0) + 1);
       }
     });
 
@@ -81,19 +91,23 @@ export class AnalyticsService {
   private aggregateByMonth(logs: any[], start: Date, end: Date) {
     const counts = new Map<string, number>();
 
-    // Initialize months in range with 0
+    // Initialize months in range with 0 using Jakarta timezone
     let current = new Date(start.getFullYear(), start.getMonth(), 1);
     const lastMonth = new Date(end.getFullYear(), end.getMonth(), 1);
     
     while (current <= lastMonth) {
-      const key = `${current.getFullYear()}-${String(current.getMonth() + 1).padStart(2, '0')}`;
+      const jakartaDateStr = current.toLocaleDateString('en-CA', { timeZone: 'Asia/Jakarta' });
+      const parts = jakartaDateStr.split('-');
+      const key = `${parts[0]}-${parts[1]}`; // YYYY-MM
       counts.set(key, 0);
       current.setMonth(current.getMonth() + 1);
     }
 
-    // Count logs
+    // Count logs using Jakarta timezone
     logs.forEach(log => {
-      const key = `${log.createdAt.getFullYear()}-${String(log.createdAt.getMonth() + 1).padStart(2, '0')}`;
+      const jakartaDateStr = log.createdAt.toLocaleDateString('en-CA', { timeZone: 'Asia/Jakarta' });
+      const parts = jakartaDateStr.split('-');
+      const key = `${parts[0]}-${parts[1]}`; // YYYY-MM
       if (counts.has(key)) {
         counts.set(key, (counts.get(key) || 0) + 1);
       }

@@ -16,6 +16,10 @@ export class CreateProjectDto {
 
   @IsOptional()
   @IsString()
+  imageUrl?: string;
+
+  @IsOptional()
+  @IsString()
   githubUrl?: string;
 
   @IsOptional()

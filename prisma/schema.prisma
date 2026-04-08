@@ -15,6 +15,7 @@ model Project {
   demoUrl     String?
   createdAt   DateTime @default(now())
   icon        String?
+  imageUrl    String?
   order       Int      @default(0)
 }
 
@@ -78,6 +79,7 @@ model SiteSetting {
   animationSpeed     Int      @default(25)
   cvUrl              String?
   updatedAt          DateTime @updatedAt
+  visitorCount       Int      @default(0)
 }
 
 model CV {
@@ -88,4 +90,19 @@ model CV {
   mimeType   String   @default("application/pdf")
   uploadedAt DateTime @default(now())
   updatedAt  DateTime @updatedAt
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  subject   String
+  message   String
+  createdAt DateTime @default(now())
+  isRead    Boolean  @default(false)
+}
+
+model VisitorLog {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
 }

@@ -1,0 +1,386 @@
+{
+  "experiences": [
+    {
+      "id": 4,
+      "role": "Intern Information Technology Department",
+      "company": "AirNav Indonesia · Internship",
+      "period": "Oct 2025 - Present · 6 mos",
+      "location": "Tangerang, Banten, Indonesia · On-site",
+      "logo": "/images/logo_airnav.png",
+      "createdAt": "2026-03-15T09:14:16.830Z",
+      "order": 0,
+      "description": "",
+      "position": null
+    },
+    {
+      "id": 5,
+      "role": "Signal Processing Teaching Assistant",
+      "company": "Universitas Syiah Kuala · Part-time",
+      "period": "Mar 2025 - Jun 2025 · 4 mos",
+      "location": "Banda Aceh, Aceh, Indonesia · On-site",
+      "logo": "/images/logo_usk.svg.png",
+      "createdAt": "2026-03-15T09:14:17.086Z",
+      "order": 1,
+      "description": "",
+      "position": null
+    },
+    {
+      "id": 6,
+      "role": "Multimedia Signal Processing Teaching Assistant",
+      "company": "Universitas Syiah Kuala",
+      "period": "Jul 2024 - Dec 2024 · 6 mos",
+      "location": "Banda Aceh, Aceh, Indonesia · On-site",
+      "logo": "/images/logo_usk.svg.png",
+      "createdAt": "2026-03-15T09:14:17.323Z",
+      "order": 2,
+      "description": "",
+      "position": null
+    },
+    {
+      "id": 7,
+      "role": "Software Engineering Lab Assistant",
+      "company": "Universitas Syiah Kuala",
+      "period": "Feb 2024 - Jun 2024 · 5 mos",
+      "location": "Banda Aceh, Aceh, Indonesia · On-site",
+      "logo": "/images/logo_usk.svg.png",
+      "createdAt": "2026-03-15T09:14:17.558Z",
+      "order": 3,
+      "description": "",
+      "position": null
+    },
+    {
+      "id": 12,
+      "role": "IT Support - Network, Digital Services, and Maintenance Services ",
+      "company": "ICT Center – Universitas Syiah Kuala (USK) ",
+      "period": "Jan 2024 - May 2024 · 5 mos",
+      "location": "On-site",
+      "logo": "images/logo_usk.svg.png",
+      "createdAt": "2026-03-31T07:52:06.897Z",
+      "order": 4,
+      "description": "",
+      "position": "Internship"
+    },
+    {
+      "id": 8,
+      "role": "Head of Public Relations Division",
+      "company": "Himpunan Mahasiswa Teknik Komputer USK",
+      "period": "Jan 2024 - Dec 2024 · 1 yr",
+      "location": "Banda Aceh, Aceh, Indonesia · On-site",
+      "logo": "/images/logo_himatekkom.png",
+      "createdAt": "2026-03-15T09:14:17.811Z",
+      "order": 5,
+      "description": "",
+      "position": null
+    },
+    {
+      "id": 11,
+      "role": "Bangkit Academy 2023 - Machine Learning Path",
+      "company": "Bangkit Academy led by Google, Tokopedia, Gojek, & Traveloka · Seasonal",
+      "period": "Aug 2023 - Jan 2024 · 6 mos",
+      "location": "Banda Aceh, Aceh, Indonesia · Remote",
+      "logo": "/images/bangkit_logo.jpg",
+      "createdAt": "2026-03-15T09:14:18.526Z",
+      "order": 6,
+      "description": "",
+      "position": null
+    },
+    {
+      "id": 9,
+      "role": "Member of Public Relations Division",
+      "company": "Himpunan Mahasiswa Teknik Komputer USK",
+      "period": "Jan 2023 - Dec 2023 · 1 yr",
+      "location": "Banda Aceh, Aceh, Indonesia · On-site",
+      "logo": "/images/logo_himatekkom.png",
+      "createdAt": "2026-03-15T09:14:18.053Z",
+      "order": 7,
+      "description": "Teamwork",
+      "position": null
+    },
+    {
+      "id": 10,
+      "role": "Member of Talent and Interests Division",
+      "company": "Himpunan Mahasiswa Teknik Komputer USK",
+      "period": "Jan 2022 - Dec 2022 · 1 yr",
+      "location": "Banda Aceh, Aceh, Indonesia · On-site",
+      "logo": "/images/logo_himatekkom.png",
+      "createdAt": "2026-03-15T09:14:18.289Z",
+      "order": 8,
+      "description": "",
+      "position": null
+    }
+  ],
+  "aboutCards": [
+    {
+      "id": 1,
+      "title": "",
+      "content": "I am a Computer Engineering graduate with experience in building scalable applications across mobile, web, and backend systems. I specialize in Flutter for cross-platform development and NestJS for backend services, with strong expertise in REST API integration and real-time features. I enjoy turning ideas into functional products, writing clean and maintainable code, and continuously improving system performance, with experience spanning production applications, machine learning projects, and IoT-based solutions.\n\nOutside of work, I enjoy watching movies and listening to music as a way to relax and recharge. I also like staying active through sports, and occasionally spend my free time playing games with friends. ",
+      "icon": "",
+      "textColor": "text-gray-600 dark:text-gray-400",
+      "order": 0,
+      "createdAt": "2026-03-15T09:10:07.403Z"
+    }
+  ],
+  "projects": [
+    {
+      "id": 6,
+      "title": "ArsipKu",
+      "description": "ArsipKu membantu anda mengelola dan menyimpanseluruh korespondensi surat secara digital, rapi, dan terstruktur dalam satu aplikasi",
+      "techStack": "Flutter, dart, GetX, Dio",
+      "githubUrl": null,
+      "demoUrl": null,
+      "createdAt": "2026-04-08T07:58:43.539Z",
+      "icon": null,
+      "imageUrl": "/uploads/projects/imageFile-1775636193189-462549747.png",
+      "order": 0
+    },
+    {
+      "id": 5,
+      "title": "NavEvent ",
+      "description": "Platform Digital untuk Efisiensi dan Transparansi Pengelolaan Kegiatan AirNav Indonesia",
+      "techStack": "Flutter, Dart, GetX Controller, Dio",
+      "githubUrl": null,
+      "demoUrl": null,
+      "createdAt": "2026-04-08T07:14:28.233Z",
+      "icon": null,
+      "imageUrl": "/uploads/projects/imageFile-1775632465606-884836781.png",
+      "order": 1
+    },
+    {
+      "id": 1,
+      "title": "Dental Caries Classification using FPN",
+      "description": "Deep learning research project utilizing Feature Pyramid Network architecture for dental caries segmentation and classification.",
+      "techStack": "Python, TensorFlow, OpenCV, Deep Learning, FPN",
+      "githubUrl": "https://github.com/Adith25",
+      "demoUrl": "#",
+      "createdAt": "2026-03-15T09:10:04.110Z",
+      "icon": "mdi:tooth-outline",
+      "imageUrl": "/uploads/projects/imageFile-1775621927768-680447364.png",
+      "order": 2
+    },
+    {
+      "id": 2,
+      "title": "LeakGuard — IoT Irrigation Monitoring",
+      "description": "IoT-based irrigation leak detection system designed to improve water efficiency aligned with SDG 6.4.",
+      "techStack": "Arduino, IoT, Sensors, Water Efficiency, SDG 6.4",
+      "githubUrl": "#",
+      "demoUrl": "#",
+      "createdAt": "2026-03-15T09:10:04.359Z",
+      "icon": "mdi:water-alert-outline",
+      "imageUrl": null,
+      "order": 3
+    },
+    {
+      "id": 3,
+      "title": "WudhuCycle — Greywater Reuse System",
+      "description": "Smart greywater reuse system with integrated mobile application built in Flutter.",
+      "techStack": "Flutter, Arduino, IoT, Mobile App, Sustainability",
+      "githubUrl": "#",
+      "demoUrl": "#",
+      "createdAt": "2026-03-15T09:10:04.599Z",
+      "icon": "mdi:recycle-variant",
+      "imageUrl": null,
+      "order": 4
+    },
+    {
+      "id": 4,
+      "title": "Mobile App Projects",
+      "description": "Collection of Flutter-based mobile applications showcasing cross-platform development skills.",
+      "techStack": "Flutter, Dart, REST API, Firebase, Mobile",
+      "githubUrl": "#",
+      "demoUrl": "#",
+      "createdAt": "2026-03-15T09:10:04.865Z",
+      "icon": "mdi:cellphone",
+      "imageUrl": null,
+      "order": 5
+    }
+  ],
+  "certificates": [
+    {
+      "id": 19,
+      "title": "Bangkit Academy 2023 – Machine Learning Graduate",
+      "description": "Completed the Bangkit program, a Google-led academy, specializing in Machine Learning, with comprehensive training in data analysis, model development, and real-world AI applications.",
+      "credentialUrl": null,
+      "fileUrl": "/uploads/certificates/imageFile-1774854079805-49534563.jpg",
+      "isPdf": true,
+      "createdAt": "2026-03-30T07:01:19.820Z",
+      "order": 0,
+      "pdfUrl": "/uploads/certificates/pdfFile-1774854079811-272322093.pdf"
+    },
+    {
+      "id": 17,
+      "title": "Top 50 Innovillage 2024 – IoT-Based Ablution Water Management System",
+      "description": "Developed an IoT-based automated ablution water management system to improve water efficiency and support environmental sustainability, focusing on reducing clean water consumption and adapting to climate change.",
+      "credentialUrl": null,
+      "fileUrl": "/uploads/certificates/imageFile-1774853888872-821420638.jpg",
+      "isPdf": true,
+      "createdAt": "2026-03-30T06:58:08.886Z",
+      "order": 1,
+      "pdfUrl": "/uploads/certificates/pdfFile-1774853888874-183650312.pdf"
+    },
+    {
+      "id": 18,
+      "title": "PKM-KC Grant Recipient 2024 – IoT-Based Seawater Desalination System",
+      "description": "Awarded national funding under the Student Creativity Program PKM KC to develop an IoT-based seawater desalination system aimed at improving irrigation water access for coastal agricultural areas.",
+      "credentialUrl": null,
+      "fileUrl": "/uploads/certificates/imageFile-1774853969780-21300789.jpg",
+      "isPdf": true,
+      "createdAt": "2026-03-30T06:59:29.794Z",
+      "order": 2,
+      "pdfUrl": "/uploads/certificates/pdfFile-1774853969786-7411143.pdf"
+    },
+    {
+      "id": 16,
+      "title": "Head of Public Relations Division HIMATEKKOM USK 2024",
+      "description": "Served as Head of Public Relations Division at the Computer Engineering Student Association HIMATEKKOM, leading communication strategies, managing external relations, and coordinating organizational outreach programs during the 2024 term.",
+      "credentialUrl": null,
+      "fileUrl": "/uploads/certificates/imageFile-1774845925156-928801871.jpg",
+      "isPdf": true,
+      "createdAt": "2026-03-30T04:45:25.230Z",
+      "order": 3,
+      "pdfUrl": "/uploads/certificates/pdfFile-1774845925160-519015683.pdf"
+    },
+    {
+      "id": 11,
+      "title": "Machine Learning Specialization – Stanford University",
+      "description": "Completed a comprehensive machine learning specialization by Stanford University and DeepLearning.AI, covering supervised learning, unsupervised learning, and reinforcement learning with practical applications in real-world problem solving.",
+      "credentialUrl": "https://www.coursera.org/account/accomplishments/specialization/QHTLRSYKW4SA",
+      "fileUrl": "/uploads/certificates/imageFile-1774843559156-529776707.jpg",
+      "isPdf": true,
+      "createdAt": "2026-03-30T04:05:59.238Z",
+      "order": 4,
+      "pdfUrl": "/uploads/certificates/pdfFile-1774843559159-119346599.pdf"
+    },
+    {
+      "id": 10,
+      "title": "DeepLearning.AI TensorFlow Developer Professional Certificate",
+      "description": "Completed a professional certification in TensorFlow, covering neural networks, computer vision, natural language processing, and time series modeling for building and deploying AI-powered applications.",
+      "credentialUrl": "https://www.coursera.org/account/accomplishments/professional-cert/DCVGPCP2PBYB",
+      "fileUrl": "/uploads/certificates/imageFile-1774843353379-430586350.jpg",
+      "isPdf": true,
+      "createdAt": "2026-03-17T07:48:44.491Z",
+      "order": 5,
+      "pdfUrl": "/uploads/certificates/pdfFile-1774843353387-978862425.pdf"
+    },
+    {
+      "id": 9,
+      "title": "Mathematics for Machine Learning and Data Science Specialization",
+      "description": "Completed a specialization covering core mathematical foundations for machine learning and data science, including linear algebra, calculus, probability, and statistics for building and understanding ML models.",
+      "credentialUrl": "https://www.coursera.org/account/accomplishments/specialization/C925K644YJMX",
+      "fileUrl": "/uploads/certificates/imageFile-1774842242822-52141925.jpg",
+      "isPdf": true,
+      "createdAt": "2026-03-17T07:43:45.279Z",
+      "order": 6,
+      "pdfUrl": "/uploads/certificates/pdfFile-1774842242828-407542437.pdf"
+    },
+    {
+      "id": 7,
+      "title": "TensorFlow Specialization – Data and Deployment",
+      "description": "Completed a TensorFlow specialization focused on deploying machine learning models across web and mobile platforms, including building data pipelines, optimizing models, and implementing real-world ML deployment strategies.",
+      "credentialUrl": "https://www.coursera.org/account/accomplishments/specialization/64TAHH2RN4TW",
+      "fileUrl": "/uploads/certificates/imageFile-1774843367772-833482535.jpg",
+      "isPdf": true,
+      "createdAt": "2026-03-15T09:21:08.353Z",
+      "order": 7,
+      "pdfUrl": "/uploads/certificates/pdfFile-1774843367782-298204111.pdf"
+    },
+    {
+      "id": 12,
+      "title": "Dicoding – Basic Programming for Software Development",
+      "description": "Completed a foundational programming course covering core programming concepts, problem-solving, and software development fundamentals as a basis for becoming a software developer.",
+      "credentialUrl": "dicoding.com/certificates/JLX1DQ79GZ72",
+      "fileUrl": "/uploads/certificates/imageFile-1774843629329-961412601.jpg",
+      "isPdf": true,
+      "createdAt": "2026-03-30T04:07:09.352Z",
+      "order": 8,
+      "pdfUrl": "/uploads/certificates/pdfFile-1774843629332-922818901.pdf"
+    },
+    {
+      "id": 13,
+      "title": "Dicoding – Programming Logic 101",
+      "description": "Completed a foundational course in programming logic, covering problem-solving techniques, algorithmic thinking, and basic logic structures essential for software development.",
+      "credentialUrl": "dicoding.com/certificates/0LZ0904GQZ65",
+      "fileUrl": "/uploads/certificates/imageFile-1774843684985-896162152.jpg",
+      "isPdf": true,
+      "createdAt": "2026-03-30T04:08:05.002Z",
+      "order": 9,
+      "pdfUrl": "/uploads/certificates/pdfFile-1774843684987-501920406.pdf"
+    },
+    {
+      "id": 14,
+      "title": "Dicoding – Git and GitHub Fundamentals",
+      "description": "Completed a foundational course on version control using Git and GitHub, including repository management, branching, collaboration workflows, and code versioning best practices.",
+      "credentialUrl": "dicoding.com/certificates/53XEN6K59XRN",
+      "fileUrl": "/uploads/certificates/imageFile-1774845687987-523556458.jpg",
+      "isPdf": true,
+      "createdAt": "2026-03-30T04:41:28.055Z",
+      "order": 10,
+      "pdfUrl": "/uploads/certificates/pdfFile-1774845688002-363266732.pdf"
+    },
+    {
+      "id": 15,
+      "title": "Oracle Academy – Database Design Course Completion",
+      "description": "Acquired practical skills in database design, including entity relationship modeling, normalization, and relational database structuring using industry standard practices.",
+      "credentialUrl": null,
+      "fileUrl": "/uploads/certificates/imageFile-1774845769033-336372799.jpg",
+      "isPdf": true,
+      "createdAt": "2026-03-30T04:42:49.041Z",
+      "order": 11,
+      "pdfUrl": "/uploads/certificates/pdfFile-1774845769035-460480630.pdf"
+    },
+    {
+      "id": 20,
+      "title": "Machine Learning – Unsupervised Learning, Recommenders, Reinforcement Learning",
+      "description": "Completed an advanced machine learning course by DeepLearning.AI and Stanford University, covering unsupervised learning techniques, recommendation systems, and reinforcement learning concepts for real-world applications.",
+      "credentialUrl": "https://www.coursera.org/account/accomplishments/verify/448H2P8BBAFN",
+      "fileUrl": "/uploads/certificates/imageFile-1774854933611-485469843.jpg",
+      "isPdf": true,
+      "createdAt": "2026-03-30T07:15:33.624Z",
+      "order": 12,
+      "pdfUrl": "/uploads/certificates/pdfFile-1774854933619-667985269.pdf"
+    },
+    {
+      "id": 21,
+      "title": "Google Data Analytics – Process Data from Dirty to Clean",
+      "description": "Completed a Google Data Analytics course focused on data cleaning and preprocessing, including handling missing values, data transformation, and ensuring data quality for analysis.",
+      "credentialUrl": "https://www.coursera.org/account/accomplishments/verify/A2D85M526AXT",
+      "fileUrl": "/uploads/certificates/imageFile-1774856273276-601071156.jpg",
+      "isPdf": true,
+      "createdAt": "2026-03-30T07:37:53.337Z",
+      "order": 13,
+      "pdfUrl": "/uploads/certificates/pdfFile-1774856273283-39624718.pdf"
+    },
+    {
+      "id": 22,
+      "title": "Convolutional Neural Networks in TensorFlow – DeepLearning.AI",
+      "description": "Completed a course on Convolutional Neural Networks using TensorFlow, focusing on image classification, feature extraction, and building deep learning models for computer vision tasks.",
+      "credentialUrl": "https://coursera.org/verify/RDWSNUADSUKS",
+      "fileUrl": "/uploads/certificates/imageFile-1774857304255-336552446.jpg",
+      "isPdf": true,
+      "createdAt": "2026-03-30T07:55:06.130Z",
+      "order": 14,
+      "pdfUrl": "/uploads/certificates/pdfFile-1774857304264-348915023.pdf"
+    },
+    {
+      "id": 23,
+      "title": "test random",
+      "description": "askjbasdasd",
+      "credentialUrl": null,
+      "fileUrl": "/uploads/certificates/imageFile-1774858524381-721848931.jpg",
+      "isPdf": true,
+      "createdAt": "2026-03-30T08:15:26.137Z",
+      "order": 15,
+      "pdfUrl": "/uploads/certificates/pdfFile-1774858524386-598795232.pdf"
+    }
+  ],
+  "settings": {
+    "id": 1,
+    "announcementText": "⚠️ This website is still under maintenance ⚠️",
+    "announcementActive": true,
+    "bannerColor": "#4f46e5",
+    "textColor": "#ffffff",
+    "animationSpeed": 25,
+    "cvUrl": "/uploads/cv/cv-1774932000570-383329670.pdf",
+    "updatedAt": "2026-04-08T07:57:44.313Z",
+    "visitorCount": 9
+  }
+}

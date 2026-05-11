@@ -7,6 +7,9 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 const logger = new Logger('Main');
 
+/**
+ * Initializes and starts the NestJS application
+ */
 async function bootstrap() {
   const uploadsPath = join(process.cwd(), 'uploads');
   const certificatesPath = join(uploadsPath, 'certificates');

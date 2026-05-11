@@ -127,3 +127,8 @@ npm run test:e2e
 # Run test coverage
 npm run test:cov
 ```
+
+---
+
+## 5. Maintenance
+This repository is regularly maintained to ensure compatibility with the latest dependencies and security patches.

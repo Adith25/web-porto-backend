@@ -15,6 +15,9 @@ import { SettingModule } from './setting/setting.module'
 import { AnalyticsModule } from './analytics/analytics.module'
 import { MessageModule } from './message/message.module'
 
+/**
+ * Root module that aggregates all feature modules
+ */
 @Module({
   imports: [
     ServeStaticModule.forRoot({

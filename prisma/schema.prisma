@@ -6,6 +6,7 @@ datasource db {
   provider = "postgresql"
 }
 
+/// Represents a portfolio project showcase
 model Project {
   id          Int      @id @default(autoincrement())
   title       String

@@ -1,7 +1,7 @@
 {
   "name": "backend",
   "version": "0.0.1",
-  "description": "",
+  "description": "Backend services for the Web Portfolio application",
   "author": "",
   "private": true,
   "license": "UNLICENSED",

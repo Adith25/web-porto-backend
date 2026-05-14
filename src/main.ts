@@ -33,6 +33,7 @@ async function bootstrap() {
     credentials: true,
   });
 
+  // Configure global security and validation middleware
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

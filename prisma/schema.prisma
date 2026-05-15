@@ -103,6 +103,7 @@ model Message {
   isRead    Boolean  @default(false)
 }
 
+/// Tracks site visits for basic analytics
 model VisitorLog {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())

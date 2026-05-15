@@ -15,6 +15,7 @@ async function bootstrap() {
   const certificatesPath = join(uploadsPath, 'certificates');
   const cvPath = join(uploadsPath, 'cv');
 
+  // Ensure required upload directories exist for storing certificates and CV files
   [uploadsPath, certificatesPath, cvPath].forEach((path) => {
     if (!existsSync(path)) {
       mkdirSync(path, { recursive: true });

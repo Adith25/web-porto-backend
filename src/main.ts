@@ -24,6 +24,7 @@ async function bootstrap() {
 
   const app = await NestFactory.create(AppModule);
 
+  // Enable Cross-Origin Resource Sharing (CORS) to allow the frontend to communicate with the backend
   app.enableCors({
     origin: [
       'https://adityayufnanda.my.id', 

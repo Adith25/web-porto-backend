@@ -78,6 +78,7 @@ Create or update the `.env` file in the root directory and ensure the database c
 # Example .env properties
 DATABASE_URL="postgresql://user:password@localhost:5432/portfolio_db?schema=public"
 JWT_SECRET="your_super_secret_key"
+PORT=3001
 ```
 
 ### 3. Database Setup (Prisma)

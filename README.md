@@ -111,9 +111,14 @@ npm run start:dev
 # Production mode
 npm run start:prod
 ```
-> The server typically runs on `http://localhost:3001` (or whatever port is defined in the `main.ts` / `.env` config).
+### 5. API Documentation (Swagger)
 
-### 5. Testing
+The application automatically generates interactive API documentation. Once the server is running, you can access the Swagger UI at:
+- `http://localhost:3001/api/docs`
+
+---
+
+### 6. Testing
 
 The application includes unit and end-to-end testing setups via Jest:
 

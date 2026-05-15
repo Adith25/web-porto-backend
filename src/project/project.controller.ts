@@ -10,6 +10,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage, memoryStorage } from 'multer';
 import { extname } from 'path';
 
+// Determine the storage engine based on the environment:
+// Vercel (Serverless) uses memoryStorage, while standard environments use diskStorage.
 const storage = process.env.VERCEL
   ? memoryStorage()
   : diskStorage({

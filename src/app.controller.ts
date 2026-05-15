@@ -6,7 +6,7 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   /**
-   * Simple health check or greeting endpoint
+   * Root endpoint for service health monitoring and basic connectivity verification.
    */
   @Get()
   getHello(): string {

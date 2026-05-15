@@ -11,6 +11,11 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
+  /**
+   * Validates admin credentials and generates a JWT access token if successful.
+   * @param loginDto The email and password provided by the user.
+   * @throws UnauthorizedException if credentials are invalid.
+   */
   async login(loginDto: LoginDto) {
     const { email, password } = loginDto;
     console.log(`[LOGIN ATTEMPT] Email: '${email}', Password: '${password}'`);

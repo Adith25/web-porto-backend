@@ -2,7 +2,7 @@
   "name": "backend",
   "version": "0.0.1",
   "description": "Backend services for the Web Portfolio application",
-  "author": "",
+  "author": "Muhammad Aditya Yufnanda",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {

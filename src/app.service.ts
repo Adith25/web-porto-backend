@@ -3,9 +3,9 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class AppService {
   /**
-   * Returns a basic greeting string
+   * Returns a basic greeting string as a health indicator for the API
    */
   getHello(): string {
-    return 'Hello World!';
+    return 'Web Portfolio API is running!';
   }
 }

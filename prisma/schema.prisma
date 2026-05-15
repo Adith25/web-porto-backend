@@ -61,6 +61,7 @@ model Certificate {
   pdfUrl        String?
 }
 
+/// Represents a structured bio section or card for the 'About Me' page
 model AboutCard {
   id        Int      @id @default(autoincrement())
   title     String

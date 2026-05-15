@@ -20,7 +20,7 @@ import { MessageModule } from './message/message.module'
  */
 @Module({
   imports: [
-    // Static asset delivery from the uploads directory
+    // Static asset delivery: exposes the 'uploads' directory via the '/uploads' URL path
     ServeStaticModule.forRoot({
       rootPath: join(process.cwd(), 'uploads'),
       serveRoot: '/uploads',
